@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ice & fire</title>
+    <style>
+        .all_data{
+            border: 2px solid black;
+            margin: 10px;
+            padding: 20px;
+            /* display: flex;
+            flex-wrap: wrap; */
+        }
+        .list{
+            list-style-type: disc;
+        }
+        .bname{
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="parent">
+
+        </div>
+    </div>
+    <script>
+        async function urlshort(url){
+    var v = fetch(url);
+    var a = await v;
+    var out = a.json();
+    var res = await out;
+    return res;
+}
+
+async function api(){
+    v = await urlshort('https://www.anapioficeandfire.com/api/books?pageSize=12');
+    var parent = document.querySelector('.parent');
+    for(let i of v){
+        try{
+        var data_cont = document.createElement('div');
+        data_cont.classList.add('all_data');
+        data_cont.style.display = 'inline-block';
+        //name
+        var name = i.name;
+        var name_tag = document.createElement('p');
+        name_tag.innerText = i.name;
+        data_cont.append('Book Name:',name_tag);
+        //isbn
+        var isbn = i.isbn;
+        var isbn_tag = document.createElement('p');
+        isbn_tag.innerText = isbn;
+        data_cont.append('ISBN :',isbn_tag);
+        // number of pages
+        var numberOfPages = i.numberOfPages;
+        var numberOfPages_tag = document.createElement('p');
+        numberOfPages_tag.innerText = numberOfPages;
+        data_cont.append('NO of Pages:',numberOfPages_tag);
+        // authors
+        var authors = i.authors[0];
+        var authors_tag = document.createElement('p');
+        authors_tag.innerText = authors;
+        data_cont.append('Authors:',authors_tag);
+        // publisherName
+        data_cont.append();
+        var publisherName = i.publisher;
+        var publisherName_tag = document.createElement('p');
+        publisherName_tag.innerText = publisherName;
+        data_cont.append('Publisher:',publisherName_tag);
+        // releaseDate
+        var date = i.released;
+        var data = date.split('T');
+        var releaseDate = data[0];
+        var releaseDate_tag = document.createElement('p');
+        releaseDate_tag.innerText = releaseDate;
+        data_cont.append('ReleaseDate:',releaseDate_tag);
+        // Least 5 character
+        var a = i.characters[0];
+        var b = i.characters[1];
+        var c = i.characters[2];
+        var d = i.characters[3];
+        var e = i.characters[4]; 
+        var char = [a,b,c,d,e];
+        for(let j of char){
+           try{
+             v1 = await urlshort(j)
+             char_name = v1.name
+             console.log(char_name);
+             var data = char_name;
+             var char_tag = document.createElement('p');
+             char_tag.innerText = data;
+             char_tag.setAttribute('class','list');
+             data_cont.append('characters:',char_tag);
+           }
+           catch{
+            //
+           }
+        parent.append(data_cont);
+
+        }
+        }
+        catch{
+            //
+        }
+    }
+    // console.log(v);
+}
+api();
+
+
+    </script>
+</body>
+<!-- <script src="script.js"></script> -->
+</html>
